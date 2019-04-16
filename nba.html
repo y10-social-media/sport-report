@@ -1,0 +1,348 @@
+
+<html>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <style>
+        .avatar {
+              vertical-align: middle;
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+            }
+
+         .nav {
+              background-color: green;
+              overflow: hidden;
+              position: fixed;
+              top: 0;
+              width: 100%;
+              right: 0px;
+            }
+            /* Style the links inside the navigation bar */
+        .nav a {
+              float: left;
+              color: #f2f2f2;
+              text-align: center;
+              padding: 50px 50px;
+              text-decoration: none;
+              font-size: 10px;
+              transition: background 0.15s ease-in-out;
+            }
+            /* Change the color of links on hover */
+        .nav a:hover {
+              background-color: #192444;
+            }
+            /* Add a color to the active/current link */
+        .nav a.active {
+              background-color: greenyellow;
+              color: white;
+            }   
+    
+ /* Style the links inside the navigation bar */
+        .nav-right {
+          float: right;
+          color: #f2f2f2;
+          text-align: center;
+          padding: 12px 30px;
+          text-decoration: none;
+          font-size: 10px;
+        }
+
+        #button1{
+            background-color: white;
+            padding: 5px;
+            font-family: monospace;
+            font-size: 15px;
+            position: absolute;
+            right: 20px;
+            border-radius: 5%;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button1:hover{
+            background-color: cyan;
+            color: black;
+        }
+        #button2{
+            background-color: white;
+            padding: 5px;
+            font-family: monospace;
+            font-size: 15px;
+            position: absolute;
+            right: 100px;
+            border-radius: 5%;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button2:hover{
+            background-color: aqua;
+            color: black;
+        }
+        #button3{
+            background-color: white;
+            padding: 5px;
+            font-family: monospace;
+            font-size: 15px;
+            position: center;
+            border-radius: 5%;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button3:hover{
+            background-color: cyan;
+            color: black;
+        }
+        #inputFileToLoad{
+            background-color: white;
+            padding: 5px;
+            font-family: monospace;
+            font-size: 15px;
+            position: center;
+            border-radius: 5%;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #inputFileToLoad:hover{
+            background-color: cyan;
+            color: black;
+        }
+        
+        #imgTest{
+        background-color: white;
+        padding: 5px;
+        font-family: monospace;
+        font-size: 15px;
+        position: center;
+        border-radius: 5%;
+        transition-duration: 0.5s;
+        -webkit-transition-duration: 0.5s; 
+        cursor: pointer;
+        }
+        
+        #imgTest:hover{
+            background-color: cyan;
+            color: black;
+        }
+        #twit{
+            
+        }
+       
+    </style>
+    <script>
+        
+        // Initialize Firebase
+        var config = {
+        apiKey: "AIzaSyCLg_5JJfOefA0yaflqKt6NqDIncUrHzbw",
+        authDomain: "test-21ce7.firebaseapp.com",
+        databaseURL: "https://test-21ce7.firebaseio.com",
+        projectId: "test-21ce7",
+        storageBucket: "test-21ce7.appspot.com",
+        messagingSenderId: "741408477305"
+      };
+        firebase.initializeApp(config);
+                
+        // Check to see if you are logged in
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user == null) {
+                alert("Not logged in.");
+                return;
+            } else {
+                userId = user.uid;
+                name = user.displayName;
+                imageUrl = user.photoURL;
+                email = user.email;
+                    
+                // write user data to users
+                writeUserData(userId, name, email, imageUrl);
+                
+                // write data to document
+                mydiv = document.getElementById("mydata");
+                mydiv.innerHTML = name
+                myphotodiv = document.getElementById("myphoto");
+                myphotodiv.innerHTML = "<img src='" + imageUrl + "' width='50px'/>";
+                firebase.database().ref('/tweets').once('value').then(function(snapshot) {
+                    var data = (snapshot.val());
+                    if (data == null) {
+                      console.log("No data found at /tweets/" + userId);  
+                    } else {
+                        
+                      firebase.database().ref('/users').once('value').then(function(snapshot) { 
+                        var userdata = (snapshot.val());
+                        if (userdata != null) {
+                           dataarray = [data,userdata]
+                           console.log(dataarray)
+                           updatetweets(dataarray); 
+                        }
+                      });
+                      //console.log(data)
+                      //updatetweets(data);
+                    }
+                });
+            } // end user null check
+        }); // end check auth state
+        
+        function encodeImageFileAsURL() {
+            var filesSelected = document.getElementById("inputFileToLoad").files;
+            if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function(fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    //var newImage = document.createElement('img');
+                    //newImage.src = srcData;
+                    //document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                    document.getElementById("imgTest").innerHTML = srcData;
+                    //console.log("Converted Base64 version is: " + document.getElementById("imgTest").innerHTML);
+                    console.log(srcData);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        } // end function
+        
+        // write user data
+        function writeUserData(userId, name, email, imageUrl) {
+            firebase.database().ref('users/' + userId).set({
+                username: name,
+                email: email,
+                profile_picture : imageUrl
+            });
+        }
+        
+        function updatetweets(data) {
+            //var mylist = "<ul>";
+            var mytab = "<table>";
+            users = data[1]; // put on top, because changed data - not good coding change later
+            data = data[0];
+            
+            for (var u in data) {
+                for (var t in data[u]) {
+                    mytab = mytab + "<tr>";
+                    var date = new Date(data[u][t].time);
+                    var time = date.toString();
+                    if (data[u][t].img != "") {
+                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'> </td>";
+                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='300px'></td>";
+                    } else {
+                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
+                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        mytab = mytab + "<td>" + time + "</td>";
+                        
+                        
+                    } 
+                    mytab = mytab + "</tr>";
+                }   
+            }
+            //mylist = mylist + "</ul>";
+            mytab = mytab + "</table>"
+            var mytdiv = document.getElementById("mytweets");
+            //mytdiv.innerHTML = mylist;
+            mytdiv.innerHTML = mytab;
+        }
+        
+        // write tweets to firebase
+        function tweet() {
+    
+            var twitdoc = document.getElementById("twit");
+            var twitimg = document.getElementById("imgTest");
+            var nameValue = twitdoc.value;
+            var imgValue = twitimg.innerHTML;
+            var js_time = Date.now();
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: nameValue, time: js_time, img: imgValue});
+            twitdoc.value = "";
+            console.log("tweet written")
+            
+            firebase.database().ref('/tweets').once('value').then(function(snapshot) {
+                    var data = (snapshot.val());
+                    if (data == null) {
+                      console.log("No data found at /tweets/" + userId);  
+                    } else { 
+                        firebase.database().ref('/users').once('value').then(function(snapshot) { 
+                        var userdata = (snapshot.val());
+                        if (userdata != null) {
+                           dataarray = [data,userdata]
+                           console.log(dataarray)
+                           updatetweets(dataarray); 
+                        }
+                      });
+                    }
+                });
+            alert("Your post have been submitted.");
+            
+            
+            // The unique key stored in tweetid is based on a timestamp, so list items will automatically be ordered chronologically. Because Firebase generates a unique key for each tweet, no write conflicts will occur if multiple users add a post at the same time. https://firebase.google.com/docs/database/admin/save-data
+            
+        }
+        
+        function signin() {
+            console.log("Signing in");
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider).then(function(result) { 
+                window.location.replace("fbtest.html");
+            });
+        }
+        
+        function signout() {
+            console.log("Signing out");
+            firebase.auth().signOut().then(function() {
+            });
+        }
+        
+    
+    </script>
+
+
+      
+        <div class="nav">
+          <a href="#home">Home</a>
+          <a class="active" href="#basketball">NBA and EuroLeague</a>
+          <a href="#tennis">Tennis</a>
+          <a href="#football">World Football</a>
+          <a href="#hockey">NHL</a>
+          <a href="#about">About</a>
+          <div class="nav-right">
+            <div id="myphoto"></div>
+            <div id="mydata"></div>
+              <button id="button2" onclick="signout()">Sign out</button>
+              <button id="button1" onclick="signin()">Sign in</button>
+        </div>
+        </div>
+        
+        
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+            
+        <body>
+        <form>
+            <center>Comment Section</center><br>
+            <center><textarea id="twit" type="text" name="thetweet" cols="100" rows="4"></textarea></center>
+        </form> 
+        <center><button id="button3" type="button" onclick="tweet()">Submit</button></center>
+    
+        <br><center><input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
+        <div id="imgTest" style="display:none;"></div>
+        
+    <div id="mytweets"></div>
+    
+        
+        
+        
+        
+    </body>
+
+    
+
+    
+</html>
