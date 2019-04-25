@@ -1,11 +1,18 @@
 
+
 <html>
 
     <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <style>
-            body {
+        
+        #imgtest{
+            margin-left:  50px;
+            bottom: 1px;
+            
+        }
+        body {
              font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
              font-size: 13px;
             }
@@ -15,7 +22,7 @@
             border-collapse: separate;
         }    
          tr:hover {
-             background-color:aqua;
+             background-color:#f3f2f2;
         }
         th, td {
             border-bottom: 1px solid #ddd;
@@ -62,9 +69,48 @@
         }
 
         input[type=file]::-webkit-file-upload-button {
-          border: 1px solid grey;
-          background: #FFFAAA;
+          content: 'Upload a photo';
+          display: inline-block;
+          background: linear-gradient(top, #f9f9f9, #e3e3e3);
+          border: 1px solid #999;
+          border-radius: 3px;
+          padding: 5px 7px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 700;
+          font-size: 10pt;
         }
+        .custom-file-input::before {
+          content: 'Upload a photo';
+        }
+        .custom-file-input::-webkit-file-upload-button {
+           visibility: hidden;
+        }
+        .custom-file-input::before {
+          content: 'Upload a photo';
+          display: inline-block;
+          background: linear-gradient(top, #f9f9f9, #e3e3e3);
+          border: 1px solid #999;
+          border-radius: 3px;
+          padding: 6px 6px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 400;
+          font-size: 8.5pt;
+        }
+        .custom-file-input:hover::before {
+          border-color: black;
+        }
+        .custom-file-input:active::before {
+          background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+        
         #parent {
           width: 460px;
           height: 460px;
@@ -128,11 +174,12 @@
           padding: 12px 30px;
           text-decoration: none;
           font-size: 10px;
+          margin-right: 42px;
         }
 
         #button1{
             background-color: white;
-            padding: 12px;
+            padding: 11px;
             font-family: sans-serif;
             font-size: 18px;
             position: absolute;
@@ -152,7 +199,7 @@
         }
         #button2{
             background-color: white;
-            padding: 12px ;
+            padding: 11px ;
             font-family: sans-serif;
             font-size: 18px;
             position: absolute;
@@ -296,12 +343,12 @@
                     var date = new Date(data[u][t].time);
                     var time = date.toLocaleString();
                     if (data[u][t].img != "") {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px'></td>";
+                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
                         mytab = mytab + "<td>" + users[u].email + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
                         mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='150px'></td>";
                     } else {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px'></td>";
+                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
                         mytab = mytab + "<td>" + users[u].email + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
                         mytab = mytab + "<td>" + time + "</td>";
@@ -371,16 +418,17 @@
             window.location="https://www.foxsports.com"
         }
         
+        document.getElementById("imageb").click();
+        
     </script>
 
       
         <div class="nav">
-          <a href="#home">Home</a>
-          <a href="#basketball">NBA and EuroLeague</a>
-          <a href="#tennis">Tennis</a>
-          <a class="active" href="#football">World Football</a>
-          <a href="#hockey">NHL</a>
-          <a href="#about">About</a>
+            <a href="https://y10-social-media.github.io/social_media/">About</a>
+          <a href="https://y10-social-media.github.io/social_media/nba.html">NBA and EuroLeague</a>
+          <a href="https://y10-social-media.github.io/social_media/tennis.html">Tennis</a>
+          <a class="active" href="https://y10-social-media.github.io/social_media/world-football.html">World Football</a>
+            <a href="https://y10-social-media.github.io/social_media/nhl.html">NHL</a>
           <img id="fifa" src="https://i.postimg.cc/Wp0ypxct/fifa-logo.png" alt="fifa" height="125" width="125">
           <div class="nav-right">
             <div id="myphoto"></div>
@@ -402,48 +450,49 @@
         <body>
         
 
-        <table cellspacing="100">
+      <center>  <table cellspacing="100">
             
        <tr>
            <td>
             <div id="parent">
-              <iframe src="https://www.foxsports.com"></iframe>
+              <iframe src="https://www.si.com/soccer/2019/04/24/manchester-derby-city-united-title-race-top-four-premier-league"></iframe>
+<!--                <a href="https://www.google.com/"       ask arman which one  >-->
+                    <button onclick="window.open('https://www.si.com/soccer/2019/04/24/manchester-derby-city-united-title-race-top-four-premier-league')" id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
+          </button>
+<!--                </a>-->
             </div>
            </td>
            <td>
-               <a href="https://www.google.com"><button>
-               wasssup
-                   </button></a></td>
-          <td>
             <div id="parent">
-            <iframe src="https://bleacherreport.com/"></iframe>
-            <button id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <iframe src="https://bleacherreport.com/articles/2832866-epl-100-ranking-of-premier-leagues-best-players-after-matchday-35#slide0"></iframe>
+            <button onclick="window.open('https://bleacherreport.com/articles/2832866-epl-100-ranking-of-premier-leagues-best-players-after-matchday-35#slide0')" id= "imageb" type = "submit" name = "learn" value = "myimage">
             <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
           </button>
         </div>
            </td>
          <td>
             <div id="parent">
-            <iframe src="https://www.sportsnet.ca/"></iframe>
-            <button id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <iframe src="https://www.sportsnet.ca/soccer/canadian-premier-league-faq-need-know/"></iframe>
+            <button onclick="window.open('https://www.sportsnet.ca/soccer/canadian-premier-league-faq-need-know/')"  id= "imageb" type = "submit" name = "learn" value = "myimage">
            <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
         </button>
         </div>
             </td>
     </tr>
-            </table>
+          </table></center>
             <br>
 
             
-             <button onclick="window.location.href = 'https://w3docs.com';">Click Here</button>
-            
             <center>Comment Section</center><br>
             <center><textarea id="twit" type="text" cols="100" rows="4"></textarea></center>
+            
+            <br>
     
             
             <center><a class="myButton" onclick="tweet()">Submit</a></center>
     
-        <br><center><input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
+        <br><center><input class="custom-file-input" id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
         <div id="imgTest" style="display:none;"></div>
         
     </body>
