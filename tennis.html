@@ -343,22 +343,40 @@
                 for (var t in data[u]) {
                     if (data[u][t].tennis != undefined){
                     mytab = mytab + "<tr>";
+                    var naphoto = "No photo available";
+                    var navid = "No video available";
                     var date = new Date(data[u][t].time);
                     var time = date.toLocaleString();
-                    if (data[u][t].img != "") {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
-                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                    if (data[u][t].profile_picture2 == null){
+                    if (data[u][t].img == null && data[u][t].vid == null || data[u][t].img == "" && data[u][t].vid == "" || data[u][t].img == null && data[u][t].vid == "" || data[u][t].img == "" && data[u][t].vid == null) {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
-                        mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='150px'></td>";
-                  }
-                        else {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
-                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                        mytab = mytab + "<td>"+ time + "</td>";
+                    } else if (data[u][t].img != null && data[u][t].img != "" && data[u][t].vid != null && data[u][t].vid != "") {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
+                        
+                        mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
+                        mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
                         mytab = mytab + "<td>" + time + "</td>";
-                        
-                        
-                    } 
+                      } else if (data[u][t].img != null && data[u][t].vid == null || data[u][t].img != "" && data[u][t].vid == "" || data[u][t].img != null && data[u][t].vid == "" || data[u][t].img != "" && data[u][t].vid == null) { 
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
+                        mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
+                          mytab = mytab + "<td>" + navid + "</td>"
+                        mytab = mytab + "<td>" + time + "</td>";
+                      } else {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
+                        mytab = mytab + "<td>" + naphoto + "</td>"
+                        mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
+                        mytab = mytab + "<td>" + time + "</td>";  
+                      }
+                     } 
                     mytab = mytab + "</tr>";
                         
                     }
@@ -424,8 +442,9 @@
             window.location="https://www.foxsports.com"
         }
         
-        document.getElementById("imageb").click();
-        
+        function profile(){
+            location.replace("https://y10-social-media.github.io/sport-report/")
+        }
     </script>
 
       
@@ -434,14 +453,14 @@
             <img id="fifa" src="https://i.postimg.cc/t4ZmZRWP/sport-report-logo.png" alt="fifa" height="120" width="120">
             </div>
             <a href="https://y10-social-media.github.io/sport-report/">About</a>
-          <a href="https://y10-social-media.github.io/sport-report/nba-eleague.html">NBA and EuroLeague</a>
+          <a href="https://y10-social-media.github.io/sport-report/nba.html">NBA and EuroLeague</a>
           <a class="active" href="https://y10-social-media.github.io/sport-report/tennis.html">Tennis</a>
           <a href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
             <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
           <img id="fifa" src="https://i.postimg.cc/QCxppVTb/Tennis-logo.png" alt="fifa" height="120" width="170">
           <div class="nav-right">
-            <div id="myphoto"></div>
-            <div id="mydata"></div>
+            <div id="myphoto" onclick="profile()"></div>
+            <div id="mydata" onclick="profile()"></div>
               <button id="button2" onclick="signout()">Sign out</button>
               <button id="button1" onclick="signin()">Sign in</button>
         </div>
