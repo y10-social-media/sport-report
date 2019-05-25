@@ -14,6 +14,7 @@
         body {
              font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
              font-size: 13px;
+             
             }
         
         table { 
@@ -25,6 +26,7 @@
         }
         th, td {
             border-bottom: 1px solid #ddd;
+            
         
         }
         .myButton {
@@ -178,7 +180,55 @@
         .nav-left{
             float: left;
         }
+        
+        /* Style The Dropdown Button */
+        .dropbtn {
+          background-color: #192444;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+          color: white;
+          border: none;
+          cursor: pointer;
+        }
 
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+          position: relative;
+            font-size: 40px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+          display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+/*          z-index: 1;*/
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: black;
+        
+          text-decoration: none;
+          display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+          background-color: #192444;
+        }
+        
+        
         #button1{
             background-color: white;
             padding: 11px;
@@ -323,40 +373,95 @@
             }
         } // end function
         
+        function encodeVideoFileAsURL() {
+            var filesSelected = document.getElementById("inputFileToLoad1").files;
+            if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function(fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    //var newImage = document.createElement('img');
+                    //newImage.src = srcData;
+                    //document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                    document.getElementById("vidTest").innerHTML = srcData;
+                    //console.log("Converted Base64 version is: " + document.getElementById("imgTest").innerHTML);
+                    console.log(srcData);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        } 
         // write user data
         function writeUserData(userId, name, email, imageUrl) {
-            firebase.database().ref('users/' + userId).set({
-                username: name,
+            firebase.database().ref('users/' + userId).update({
+               
+                username: name, 
                 email: email,
                 profile_picture : imageUrl
+    
             });
         }
         
+//         for (var u in users) {
+//                        if (users[u].userId == userId) {
+//                            
+//                            username = users[u].newName;
+//                            
+//                            if (users[u].newName != null) {
+//                                yourUsername = users[u].newName;
+//                            } 
+//                            else {
+//                                yourUsername = users[u].username;
+//                            }
         function updatetweets(data) {
             //var mylist = "<ul>";
             var mytab = "<table>";
+             var newVidFile = "";
             users = data[1]; // put on top, because changed data - not good coding change later
             data = data[0];
             //<span style="font-family:Helvetica">mytab</span>
+            
+
 
             for (var u in data) {
                 for (var t in data[u]) {
                     mytab = mytab + "<tr>";
+                    var naphoto = "No photo available";
+                    var navid = "No video available";
                     var date = new Date(data[u][t].time);
                     var time = date.toLocaleString();
-                    if (data[u][t].img != "") {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
-                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                    if (data[u][t].tweet != undefined){
+                    if (data[u][t].profile_picture2 == null){
+                    if (data[u][t].img == null && data[u][t].vid == null || data[u][t].img == "" && data[u][t].vid == "" || data[u][t].img == null && data[u][t].vid == "" || data[u][t].img == "" && data[u][t].vid == null) {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
-                        mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='150px'></td>";
-                    } else {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
-                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                        mytab = mytab + "<td>"+ time + "</td>";
+                    } else if (data[u][t].img != null && data[u][t].img != "" && data[u][t].vid != null && data[u][t].vid != "") {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        
+                        mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
+                        mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
                         mytab = mytab + "<td>" + time + "</td>";
-                        
-                        
-                    } 
+                      } else if (data[u][t].img != null && data[u][t].vid == null || data[u][t].img != "" && data[u][t].vid == "" || data[u][t].img != null && data[u][t].vid == "" || data[u][t].img != "" && data[u][t].vid == null) { 
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
+                          mytab = mytab + "<td>" + navid + "</td>"
+                        mytab = mytab + "<td>" + time + "</td>";
+                      } else {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        mytab = mytab + "<td>" + naphoto + "</td>"
+                        mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
+                        mytab = mytab + "<td>" + time + "</td>";  
+                      }
+                     }
+                    }
+                    
                     mytab = mytab + "</tr>";
                 }   
             }
@@ -372,10 +477,13 @@
     
             var twitdoc = document.getElementById("twit");
             var twitimg = document.getElementById("imgTest");
+            var pstvid = document.getElementById("vidFileID");
             var nameValue = twitdoc.value;
             var imgValue = twitimg.innerHTML;
+            var vidValue =
+            pstvid.value.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/");
             var js_time = Date.now();
-            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: nameValue, time: js_time, img: imgValue});
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: nameValue, time: js_time, img: imgValue, vid:vidValue});
             twitdoc.value = "";
             console.log("tweet written")
             
@@ -401,6 +509,8 @@
             
         }
         
+    
+        
         function signin() {
             console.log("Signing in");
             var provider = new firebase.auth.GoogleAuthProvider();
@@ -416,10 +526,7 @@
             });
         }
         
-        function visitpage(){
-            window.location="https://www.foxsports.com"
-        }
-        
+    
         document.getElementById("imageb").click();
         
     </script>
@@ -429,11 +536,11 @@
              <div class="nav-left">
             <img id="fifa" src="https://i.postimg.cc/t4ZmZRWP/sport-report-logo.png" alt="fifa" height="120" width="120">
             </div>
-            <a href="https://y10-social-media.github.io/sport-report/">About</a>
-          <a href="https://y10-social-media.github.io/sport-report/nba.html">NBA and EuroLeague</a>
-          <a href="https://y10-social-media.github.io/sport-report/tennis.html">Tennis</a>
-          <a class="active" href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
-            <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
+            <a href="https://y10-social-media.github.io/social_media/">About</a>
+          <a href="https://y10-social-media.github.io/social_media/nba.html">NBA and EuroLeague</a>
+          <a href="https://y10-social-media.github.io/social_media/tennis.html">Tennis</a>
+            <a class="active" href="https://y10-social-media.github.io/social_media/world-football.html">World Football</a>
+            <a href="https://y10-social-media.github.io/social_media/nhl.html">NHL</a>
           <img id="fifa" src="https://i.postimg.cc/Wp0ypxct/fifa-logo.png" alt="fifa" height="120" width="125">
           <div class="nav-right">
             <div id="myphoto"></div>
@@ -496,9 +603,15 @@
     
             
             <center><a class="myButton" onclick="tweet()">Submit</a></center>
+            <br>
+    
+            
     
         <br><center><input class="custom-file-input" id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
+        
         <div id="imgTest" style="display:none;"></div>
+            <center><input placeholder="YouTube Link" class=input id="vidFileID" type="text"/></center>
+        <div id="vidTest" style="display:none;"></div>
         
     </body>
 
