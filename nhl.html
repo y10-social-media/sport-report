@@ -1,5 +1,4 @@
 
-
 <html>
 
     <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
@@ -439,8 +438,8 @@
             });
         }
         
-        function visitpage(){
-            window.location="https://www.foxsports.com"
+        function profile(){
+            location.replace("https://y10-social-media.github.io/sport-report/profile.html")
         }
         
         document.getElementById("imageb").click();
@@ -459,8 +458,8 @@
             <a class="active" href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
           <img id="fifa" src="https://i.postimg.cc/cL2y2n1v/NHL-logo.png" alt="fifa" height="120" width="120">
           <div class="nav-right">
-            <div id="myphoto"></div>
-            <div id="mydata"></div>
+            <div id="myphoto" onclick="profile()"></div>
+            <div id="mydata" onclick="profile()"></div>
               <button id="button2" onclick="signout()">Sign out</button>
               <button id="button1" onclick="signin()">Sign in</button>
         </div>
