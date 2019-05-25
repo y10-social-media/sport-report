@@ -413,7 +413,7 @@
             var nameValue = twitdoc.value;
             var imgValue = twitimg.innerHTML;
             var js_time = Date.now();
-            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({nhl: nameValue, time: js_time, img: imgValue});
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({nhl: nameValue, time: js_time, img: imgValue, vid: vidValue});
             twitdoc.value = "";
             console.log("tweet written")
             
