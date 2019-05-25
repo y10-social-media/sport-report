@@ -345,38 +345,44 @@
                     mytab = mytab + "<tr>";
                     var naphoto = "No photo available";
                     var navid = "No video available";
+                        var fan = "fan";
+                        var space =" ";
                     var date = new Date(data[u][t].time);
                     var time = date.toLocaleString();
-                    if (data[u][t].profile_picture2 == null){
                     if (data[u][t].img == null && data[u][t].vid == null || data[u][t].img == "" && data[u][t].vid == "" || data[u][t].img == null && data[u][t].vid == "" || data[u][t].img == "" && data[u][t].vid == null) {
-                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
                         mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
                         mytab = mytab + "<td>"+ time + "</td>";
                     } else if (data[u][t].img != null && data[u][t].img != "" && data[u][t].vid != null && data[u][t].vid != "") {
-                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
-                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                         mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
+                        mytab = mytab + "<td>" + users[u].newName + + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
                         
                         mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
                         mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
                         mytab = mytab + "<td>" + time + "</td>";
                       } else if (data[u][t].img != null && data[u][t].vid == null || data[u][t].img != "" && data[u][t].vid == "" || data[u][t].img != null && data[u][t].vid == "" || data[u][t].img != "" && data[u][t].vid == null) { 
-                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                           mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
                         mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
                         mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
                           mytab = mytab + "<td>" + navid + "</td>"
                         mytab = mytab + "<td>" + time + "</td>";
                       } else {
-                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture2 + "' width='100px'></td>";
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                           mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
                         mytab = mytab + "<td>" + users[u].newName + "</td>";
                         mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
                         mytab = mytab + "<td>" + naphoto + "</td>"
                         mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
-                        mytab = mytab + "<td>" + time + "</td>";  
-                      }
-                     } 
+                        mytab = mytab + "<td>" + time + "</td>";
+                        
+                        
+                    } 
                     mytab = mytab + "</tr>";
                         
                     }
