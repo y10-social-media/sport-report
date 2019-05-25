@@ -1,0 +1,510 @@
+
+<html>
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <style>
+        
+        #imgtest{
+            margin-left:  50px;
+            bottom: 1px;
+            
+        }
+        body {
+             font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+             font-size: 13px;
+            }
+        
+        table { 
+            border-spacing: 10px;
+            border-collapse: separate;
+        }    
+         tr:hover {
+             background-color:#f3f2f2;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+        
+        }
+        .myButton {
+            -moz-box-shadow: 3px 35px 5px -29px #8a2a21;
+            -webkit-box-shadow: 3px 35px 5px -29px #8a2a21;
+            box-shadow: 3px 35px 5px -29px #8a2a21;
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #c62d1f), color-stop(1, #f24437));
+            background:-moz-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+            background:-webkit-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+            background:-o-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+            background:-ms-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+            background:linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c62d1f', endColorstr='#f24437',GradientType=0);
+            background-color:#c62d1f;
+            -moz-border-radius:12px;
+            -webkit-border-radius:12px;
+            border-radius:12px;
+            border:1px solid #d02718;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:17px;
+            padding:12px 23px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #810e05;
+        }
+        .myButton:hover {
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f24437), color-stop(1, #c62d1f));
+            background:-moz-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+            background:-webkit-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+            background:-o-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+            background:-ms-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+            background:linear-gradient(to bottom, #f24437 5%, #c62d1f 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f24437', endColorstr='#c62d1f',GradientType=0);
+            background-color:#f24437;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+
+        input[type=file]::-webkit-file-upload-button {
+          content: 'Upload a photo';
+          display: inline-block;
+          background: linear-gradient(top, #f9f9f9, #e3e3e3);
+          border: 1px solid #999;
+          border-radius: 3px;
+          padding: 5px 7px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 700;
+          font-size: 10pt;
+        }
+        .custom-file-input::before {
+          content: 'Upload a photo';
+        }
+        .custom-file-input::-webkit-file-upload-button {
+           visibility: hidden;
+        }
+        .custom-file-input::before {
+          content: 'Upload a photo';
+          display: inline-block;
+          background: linear-gradient(top, #f9f9f9, #e3e3e3);
+          border: 1px solid #999;
+          border-radius: 3px;
+          padding: 6px 6px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 400;
+          font-size: 8.5pt;
+        }
+        .custom-file-input:hover::before {
+          border-color: black;
+        }
+        .custom-file-input:active::before {
+          background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+        
+        #parent {
+          width: 460px;
+          height: 460px;
+          border:solid 1px #000;
+        }
+        iframe {
+          width:100%;
+          height:100%;
+          border:0px;
+        }
+
+        #parent > button {
+          opacity: 1;
+          position: relative;
+          float: right;  
+          right:1px;
+          bottom: 460px;
+          transition: 0.5s;
+            
+        }
+ 
+        .avatar {
+              vertical-align: middle;
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+            }
+         .nav {
+              background-color: #202D59;
+              overflow: hidden;
+              position: fixed;
+              top: 0;
+              width: 100%;
+              right: 0px;
+            }
+            /* Style the links inside the navigation bar */
+        .nav a {
+              float: left;
+              color: #f2f2f2;
+              text-align: center;
+              padding: 50px 50px;
+              text-decoration: none;
+              font-size: 18px;
+              transition: background 0.15s ease-in-out;
+            }
+            /* Change the color of links on hover */
+        .nav a:hover {
+              background-color: #192444;
+            }
+            /* Add a color to the active/current link */
+        .nav a.active {
+              background-color: #192444;
+              color: white;
+            }   
+    
+ /* Style the links inside the navigation bar */
+        .nav-right {
+          float: right;
+          color: #f2f2f2;
+          text-align: center;
+          padding: 12px 30px;
+          text-decoration: none;
+          font-size: 10px;
+          margin-right: 42px;
+        }
+        .nav-left{
+            float: left;
+        }
+
+        #button1{
+            background-color: white;
+            padding: 11px;
+            font-family: sans-serif;
+            font-size: 18px;
+            position: absolute;
+            right: 105px;
+            border-radius: 7%;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button1:hover{
+            background-color: #99ebff;
+            color: black;
+        }
+        #button2{
+            background-color: white;
+            padding: 11px ;
+            font-family: sans-serif;
+            font-size: 18px;
+            position: absolute;
+            border-radius: 7%;
+            text-decoration: none;
+            display: inline-block;
+            right: 10px;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button2:hover{
+            background-color: #99ebff;
+            color: black;
+        }
+        #button3{
+            background-color: white;
+            padding: 5px;
+            font-family: monospace;
+            font-size: 15px;
+            position: center;
+            border-radius: 5%;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button3:hover{
+            background-color: cyan;
+            color: black;
+        }
+        
+        #imgTest{
+        background-color: white;
+        padding: 5px;
+        font-family: monospace;
+        font-size: 15px;
+        position: center;
+        border-radius: 5%;
+        transition-duration: 0.5s;
+        -webkit-transition-duration: 0.5s; 
+        cursor: pointer;
+        }
+        
+        #imgTest:hover{
+            background-color: cyan;
+            color: black;
+        }
+    </style>
+    <script>
+        
+       // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCLg_5JJfOefA0yaflqKt6NqDIncUrHzbw",
+            authDomain: "test-21ce7.firebaseapp.com",
+            databaseURL: "https://test-21ce7.firebaseio.com",
+            projectId: "test-21ce7",
+            storageBucket: "test-21ce7.appspot.com",
+            messagingSenderId: "741408477305"
+          };
+          firebase.initializeApp(config);
+                
+        // Check to see if you are logged in
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user == null) {
+                alert("Please sign in");
+                return;
+            } else {
+                userId = user.uid;
+                name = user.displayName;
+                imageUrl = user.photoURL;
+                email = user.email;
+                    
+                // write user data to users
+                writeUserData(userId, name, email, imageUrl);
+                
+                // write data to document
+                mydiv = document.getElementById("mydata");
+                mydiv.innerHTML = name
+                myphotodiv = document.getElementById("myphoto");
+                myphotodiv.innerHTML = "<img src='" + imageUrl + "' width='50px'/>";
+                firebase.database().ref('/tweets').once('value').then(function(snapshot) {
+                    var data = (snapshot.val());
+                    if (data == null) {
+                      console.log("No data found at /tweets/" + userId);  
+                    } else {
+                        
+                      firebase.database().ref('/users').once('value').then(function(snapshot) { 
+                        var userdata = (snapshot.val());
+                        if (userdata != null) {
+                           dataarray = [data,userdata]
+                           console.log(dataarray)
+                           updatetweets(dataarray); 
+                        }
+                      });
+                      //console.log(data)
+                      //updatetweets(data);
+                    }
+                });
+            } // end user null check
+        }); // end check auth state
+        
+        function encodeImageFileAsURL() {
+            var filesSelected = document.getElementById("inputFileToLoad").files;
+            if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function(fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    //var newImage = document.createElement('img');
+                    //newImage.src = srcData;
+                    //document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                    document.getElementById("imgTest").innerHTML = srcData;
+                    //console.log("Converted Base64 version is: " + document.getElementById("imgTest").innerHTML);
+                    console.log(srcData);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        } // end function
+        
+        // write user data
+        function writeUserData(userId, name, email, imageUrl) {
+            firebase.database().ref('users/' + userId).set({
+                username: name,
+                email: email,
+                profile_picture : imageUrl
+            });
+        }
+        
+        function updatetweets(data) {
+            //var mylist = "<ul>";
+            var mytab = "<table>";
+            users = data[1]; // put on top, because changed data - not good coding change later
+            data = data[0];
+            //<span style="font-family:Helvetica">mytab</span>
+
+            for (var u in data) {
+                for (var t in data[u]) {
+                    if (data[u][t].tennis != undefined){
+                    mytab = mytab + "<tr>";
+                    var date = new Date(data[u][t].time);
+                    var time = date.toLocaleString();
+                    if (data[u][t].img != "") {
+                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
+                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
+                        mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='150px'></td>";
+                  }
+                        else {
+                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
+                        mytab = mytab + "<td>" + users[u].email + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
+                        mytab = mytab + "<td>" + time + "</td>";
+                        
+                        
+                    } 
+                    mytab = mytab + "</tr>";
+                        
+                    }
+                }   
+            }
+            //mylist = mylist + "</ul>";
+            mytab = mytab + "</table>"
+            var mytdiv = document.getElementById("mytweets");
+            //mytdiv.innerHTML = mylist;
+            mytdiv.innerHTML = mytab;
+        }
+        
+        // write tweets to firebase
+        function tweet() {
+    
+            var twitdoc = document.getElementById("twit");
+            var twitimg = document.getElementById("imgTest");
+            var nameValue = twitdoc.value;
+            var imgValue = twitimg.innerHTML;
+            var js_time = Date.now();
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tennis: nameValue, time: js_time, img: imgValue});
+            twitdoc.value = "";
+            console.log("tweet written")
+            
+            firebase.database().ref('/tweets').once('value').then(function(snapshot) {
+                    var data = (snapshot.val());
+                    if (data == null) {
+                      console.log("No data found at /tweets/" + userId);  
+                    } else { 
+                        firebase.database().ref('/users').once('value').then(function(snapshot) { 
+                        var userdata = (snapshot.val());
+                        if (userdata != null) {
+                           dataarray = [data,userdata]
+                           console.log(dataarray)
+                           updatetweets(dataarray); 
+                        }
+                      });
+                    }
+                });
+            alert("Your post have been submitted.");
+            
+            
+            // The unique key stored in tweetid is based on a timestamp, so list items will automatically be ordered chronologically. Because Firebase generates a unique key for each tweet, no write conflicts will occur if multiple users add a post at the same time. https://firebase.google.com/docs/database/admin/save-data
+            
+        }
+        
+        function signin() {
+            console.log("Signing in");
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider).then(function(result) { 
+                window.location.replace("tennis.html");
+            });
+        }
+        
+        function signout() {
+            console.log("Signing out");
+            firebase.auth().signOut().then(function(result) {
+                window.location.replace("tennis.html")
+            });
+        }
+        
+        function visitpage(){
+            window.location="https://www.foxsports.com"
+        }
+        
+        document.getElementById("imageb").click();
+        
+    </script>
+
+      
+        <div class="nav">
+            <div class="nav-left">
+            <img id="fifa" src="https://i.postimg.cc/t4ZmZRWP/sport-report-logo.png" alt="fifa" height="120" width="120">
+            </div>
+            <a href="https://y10-social-media.github.io/sport-report/">About</a>
+          <a href="https://y10-social-media.github.io/sport-report/nba.html">NBA and EuroLeague</a>
+          <a class="active" href="https://y10-social-media.github.io/sport-report/tennis.html">Tennis</a>
+          <a href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
+            <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
+          <img id="fifa" src="https://i.postimg.cc/QCxppVTb/Tennis-logo.png" alt="fifa" height="120" width="170">
+          <div class="nav-right">
+            <div id="myphoto"></div>
+            <div id="mydata"></div>
+              <button id="button2" onclick="signout()">Sign out</button>
+              <button id="button1" onclick="signin()">Sign in</button>
+        </div>
+        </div>
+        
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+         
+    
+        <body>
+        
+
+      <center>  <table cellspacing="100">
+            
+       <tr>
+           <td>
+            <div id="parent">
+              <iframe src="https://www.bbc.com/sport/tennis/48043952"></iframe>
+<!--                <a href="https://www.google.com/"       ask arman which one  >-->
+                    <button onclick="window.open('https://www.bbc.com/sport/tennis/48043952')" id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
+          </button>
+<!--                </a>-->
+            </div>
+           </td>
+           <td>
+            <div id="parent">
+            <iframe src="https://www.skysports.com/tennis/news/12110/11702289/atp-finals-to-leave-london-for-turin-from-2021"></iframe>
+            <button onclick="window.open('https://www.skysports.com/tennis/news/12110/11702289/atp-finals-to-leave-london-for-turin-from-2021')" id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
+          </button>
+        </div>
+           </td>
+         <td>
+            <div id="parent">
+            <iframe src="https://www.bbc.com/sport/tennis/48044463"></iframe>
+            <button onclick="window.open('https://www.bbc.com/sport/tennis/48044463')"  id= "imageb" type = "submit" name = "learn" value = "myimage">
+           <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
+        </button>
+        </div>
+            </td>
+    </tr>
+          </table></center>
+            <br>
+
+            
+            <center>Comment Section</center><br>
+            <center><textarea id="twit" type="text" cols="100" rows="4"></textarea></center>
+            
+            <br>
+    
+            
+            <center><a class="myButton" onclick="tweet()">Submit</a></center>
+    
+        <br><center><input class="custom-file-input" id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
+        <div id="imgTest" style="display:none;"></div>
+        
+    </body>
+
+    <center><div id="mytweets"></div></center>
+</html>
