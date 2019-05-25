@@ -6,11 +6,24 @@
 
     <style>
         
-        #imgtest{
-            margin-left:  50px;
-            bottom: 1px;
-            
+        .input{
+           background-color: whitesmoke;
+          color: blue;
+          border: 1px solid black;
+          padding: 5px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          border-radius: 5px;
+          transition: background 0.15s ease-in-out;  
         }
+        
+        .input:hover {
+          background-color: black;
+          color: whitesmoke;
+        }
+        
         body {
              font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
              font-size: 13px;
@@ -536,11 +549,11 @@
              <div class="nav-left">
             <img id="fifa" src="https://i.postimg.cc/t4ZmZRWP/sport-report-logo.png" alt="fifa" height="120" width="120">
             </div>
-            <a href="https://y10-social-media.github.io/social_media/">About</a>
-          <a href="https://y10-social-media.github.io/social_media/nba.html">NBA and EuroLeague</a>
-          <a href="https://y10-social-media.github.io/social_media/tennis.html">Tennis</a>
-            <a class="active" href="https://y10-social-media.github.io/social_media/world-football.html">World Football</a>
-            <a href="https://y10-social-media.github.io/social_media/nhl.html">NHL</a>
+            <a href="https://y10-social-media.github.io/sport-report/">About</a>
+          <a href="https://y10-social-media.github.io/sport-report/nba.html">NBA and EuroLeague</a>
+          <a href="https://y10-social-media.github.io/sport-report/tennis.html">Tennis</a>
+            <a class="active" href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
+            <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
           <img id="fifa" src="https://i.postimg.cc/Wp0ypxct/fifa-logo.png" alt="fifa" height="120" width="125">
           <div class="nav-right">
             <div id="myphoto"></div>
@@ -610,7 +623,7 @@
         <br><center><input class="custom-file-input" id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
         
         <div id="imgTest" style="display:none;"></div>
-            <center><input placeholder="YouTube Link" class=input id="vidFileID" type="text"/></center>
+            <center><input placeholder="Insert YouTube Link" class=input id="vidFileID" type="text"/></center>
         <div id="vidTest" style="display:none;"></div>
         
     </body>

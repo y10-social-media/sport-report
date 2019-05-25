@@ -256,12 +256,12 @@
         
        // Initialize Firebase
         var config = {
-            apiKey: "AIzaSyBtT7iLS61W2a3xzAxcTbxCj-CCORsSpLA",
-            authDomain: "tennis-bad66.firebaseapp.com",
-            databaseURL: "https://tennis-bad66.firebaseio.com",
-            projectId: "tennis-bad66",
-            storageBucket: "tennis-bad66.appspot.com",
-            messagingSenderId: "942369290567"
+            apiKey: "AIzaSyCLg_5JJfOefA0yaflqKt6NqDIncUrHzbw",
+            authDomain: "test-21ce7.firebaseapp.com",
+            databaseURL: "https://test-21ce7.firebaseio.com",
+            projectId: "test-21ce7",
+            storageBucket: "test-21ce7.appspot.com",
+            messagingSenderId: "741408477305"
           };
           firebase.initializeApp(config);
                 
@@ -341,23 +341,27 @@
 
             for (var u in data) {
                 for (var t in data[u]) {
+                    if (data[u][t].tennis != undefined){
                     mytab = mytab + "<tr>";
                     var date = new Date(data[u][t].time);
                     var time = date.toLocaleString();
                     if (data[u][t].img != "") {
                         mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
                         mytab = mytab + "<td>" + users[u].email + "</td>";
-                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
                         mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='150px'></td>";
-                    } else {
+                  }
+                        else {
                         mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
                         mytab = mytab + "<td>" + users[u].email + "</td>";
-                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].tennis + "</td>";
                         mytab = mytab + "<td>" + time + "</td>";
                         
                         
                     } 
                     mytab = mytab + "</tr>";
+                        
+                    }
                 }   
             }
             //mylist = mylist + "</ul>";
@@ -375,7 +379,7 @@
             var nameValue = twitdoc.value;
             var imgValue = twitimg.innerHTML;
             var js_time = Date.now();
-            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: nameValue, time: js_time, img: imgValue});
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tennis: nameValue, time: js_time, img: imgValue});
             twitdoc.value = "";
             console.log("tweet written")
             

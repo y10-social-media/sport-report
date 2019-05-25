@@ -14,6 +14,7 @@
         body {
              font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
              font-size: 13px;
+             
             }
         
         table { 
@@ -25,6 +26,7 @@
         }
         th, td {
             border-bottom: 1px solid #ddd;
+            
         
         }
         .myButton {
@@ -170,16 +172,64 @@
           float: right;
           color: #f2f2f2;
           text-align: center;
-          padding: 12px 30px;
+          padding: 5px 12px;
+/*            12 30*/
           text-decoration: none;
           font-size: 10px;
-          margin-right: 42px;
+          margin-right: 65px;
         }
-        
         .nav-left{
             float: left;
         }
+        
+        /* Style The Dropdown Button */
+        .dropbtn {
+          background-color: #192444;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+          color: white;
+          border: none;
+          cursor: pointer;
+        }
 
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+          position: relative;
+            font-size: 40px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+          display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+/*          z-index: 1;*/
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: black;
+        
+          text-decoration: none;
+          display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+          background-color: #192444;
+        }
+        
+        
         #button1{
             background-color: white;
             padding: 11px;
@@ -236,17 +286,14 @@
             color: black;
         }
         
-        #imgTest{
-        background-color: white;
-        padding: 5px;
-        font-family: monospace;
-        font-size: 15px;
-        position: center;
-        border-radius: 5%;
-        transition-duration: 0.5s;
-        -webkit-transition-duration: 0.5s; 
+        #myphoto{
         cursor: pointer;
         }
+        
+        .mydata{
+            cursor: auto;
+        }
+        
         
         #imgTest:hover{
             background-color: cyan;
@@ -255,16 +302,16 @@
     </style>
     <script>
         
-       // Initialize Firebase
+        // Initialize Firebase
         var config = {
-            apiKey: "AIzaSyBtT7iLS61W2a3xzAxcTbxCj-CCORsSpLA",
-            authDomain: "tennis-bad66.firebaseapp.com",
-            databaseURL: "https://tennis-bad66.firebaseio.com",
-            projectId: "tennis-bad66",
-            storageBucket: "tennis-bad66.appspot.com",
-            messagingSenderId: "942369290567"
-          };
-          firebase.initializeApp(config);
+        apiKey: "AIzaSyCLg_5JJfOefA0yaflqKt6NqDIncUrHzbw",
+        authDomain: "test-21ce7.firebaseapp.com",
+        databaseURL: "https://test-21ce7.firebaseio.com",
+        projectId: "test-21ce7",
+        storageBucket: "test-21ce7.appspot.com",
+        messagingSenderId: "741408477305"
+      };
+        firebase.initializeApp(config);
                 
         // Check to see if you are logged in
         firebase.auth().onAuthStateChanged(function(user) {
@@ -324,42 +371,102 @@
             }
         } // end function
         
+        function encodeVideoFileAsURL() {
+            var filesSelected = document.getElementById("inputFileToLoad1").files;
+            if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function(fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    //var newImage = document.createElement('img');
+                    //newImage.src = srcData;
+                    //document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                    document.getElementById("vidTest").innerHTML = srcData;
+                    //console.log("Converted Base64 version is: " + document.getElementById("imgTest").innerHTML);
+                    console.log(srcData);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        } 
         // write user data
         function writeUserData(userId, name, email, imageUrl) {
-            firebase.database().ref('users/' + userId).set({
-                username: name,
+            firebase.database().ref('users/' + userId).update({
+               
+                username: name, 
                 email: email,
                 profile_picture : imageUrl
+    
             });
         }
         
+//         for (var u in users) {
+//                        if (users[u].userId == userId) {
+//                            
+//                            username = users[u].newName;
+//                            
+//                            if (users[u].newName != null) {
+//                                yourUsername = users[u].newName;
+//                            } 
+//                            else {
+//                                yourUsername = users[u].username;
+//                            }
         function updatetweets(data) {
             //var mylist = "<ul>";
             var mytab = "<table>";
+             var newVidFile = "";
             users = data[1]; // put on top, because changed data - not good coding change later
             data = data[0];
             //<span style="font-family:Helvetica">mytab</span>
+            
+
 
             for (var u in data) {
                 for (var t in data[u]) {
+                    if (data[u][t].nba != undefined){
                     mytab = mytab + "<tr>";
+                    var naphoto = "No photo available";
+                    var navid = "No video available";
+                        var fan = "fan";
+                        var space =" ";
                     var date = new Date(data[u][t].time);
                     var time = date.toLocaleString();
-                    if (data[u][t].img != "") {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
-                        mytab = mytab + "<td>" + users[u].email + "</td>";
-                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
-                        mytab = mytab + "<td>" + time + "<br><img src='" + data[u][t].img + "' width='150px'></td>";
-                    } else {
-                        mytab = mytab + "<td><img src='" + users[u].profile_picture + "' width='50px' class='avatar'></td>";
-                        mytab = mytab + "<td>" + users[u].email + "</td>";
-                        mytab = mytab + "<td>" + data[u][t].tweet + "</td>";
+                    if (data[u][t].img == null && data[u][t].vid == null || data[u][t].img == "" && data[u][t].vid == "" || data[u][t].img == null && data[u][t].vid == "" || data[u][t].img == "" && data[u][t].vid == null) {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                        mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].nba + "</td>";
+                        mytab = mytab + "<td>"+ time + "</td>";
+                    } else if (data[u][t].img != null && data[u][t].img != "" && data[u][t].vid != null && data[u][t].vid != "") {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                         mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
+                        mytab = mytab + "<td>" + users[u].newName + + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].nba + "</td>";
+                        
+                        mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
+                        mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
+                        mytab = mytab + "<td>" + time + "</td>";
+                      } else if (data[u][t].img != null && data[u][t].vid == null || data[u][t].img != "" && data[u][t].vid == "" || data[u][t].img != null && data[u][t].vid == "" || data[u][t].img != "" && data[u][t].vid == null) { 
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                           mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].nba + "</td>";
+                        mytab = mytab + "<td><img class = 'zoom' src='" + data[u][t].img + "' width=400' height='225' ></td>";
+                          mytab = mytab + "<td>" + navid + "</td>"
+                        mytab = mytab + "<td>" + time + "</td>";
+                      } else {
+                        mytab = mytab + "<td><img class = 'avatar' src='" + users[u].profile_picture + "' width='100px'></td>";
+                           mytab = mytab + "<td>" + users[u].favorite_sport + space + fan + "</td>";
+                        mytab = mytab + "<td>" + users[u].newName + "</td>";
+                        mytab = mytab + "<td>" + data[u][t].nba + "</td>";
+                        mytab = mytab + "<td>" + naphoto + "</td>"
+                        mytab = mytab + "<td class = 'txtbox'> <iframe width='400' height='225' src='" + data[u][t].vid + " 'width = '100%' hight = '100%' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></td>";
                         mytab = mytab + "<td>" + time + "</td>";
                         
                         
                     } 
                     mytab = mytab + "</tr>";
-                }   
+                }  
+                }
             }
             //mylist = mylist + "</ul>";
             mytab = mytab + "</table>"
@@ -373,10 +480,13 @@
     
             var twitdoc = document.getElementById("twit");
             var twitimg = document.getElementById("imgTest");
+            var pstvid = document.getElementById("vidFileID");
             var nameValue = twitdoc.value;
             var imgValue = twitimg.innerHTML;
+            var vidValue =
+            pstvid.value.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/");
             var js_time = Date.now();
-            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: nameValue, time: js_time, img: imgValue});
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({nba: nameValue, time: js_time, img: imgValue, vid:vidValue});
             twitdoc.value = "";
             console.log("tweet written")
             
@@ -402,44 +512,46 @@
             
         }
         
+        function profile() {
+          location.replace("profile.html")
+        }
+        
         function signin() {
             console.log("Signing in");
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithRedirect(provider).then(function(result) { 
-                window.location.replace("tennis.html");
+                window.location.replace("world-football.html");
             });
         }
         
         function signout() {
             console.log("Signing out");
             firebase.auth().signOut().then(function(result) {
-                window.location.replace("tennis.html")
+                window.location.replace("world-football.html")
             });
         }
         
-        function visitpage(){
-            window.location="https://www.foxsports.com"
-        }
-        
+    
         document.getElementById("imageb").click();
         
     </script>
 
       
         <div class="nav">
-            <div class="nav-left">
+             <div class="nav-left">
             <img id="fifa" src="https://i.postimg.cc/t4ZmZRWP/sport-report-logo.png" alt="fifa" height="120" width="120">
             </div>
-            <a href="https://y10-social-media.github.io/sport-report/">About</a>
-          <a class="active" href="https://y10-social-media.github.io/sport-report/nba.html">NBA and EuroLeague</a>
-          <a href="https://y10-social-media.github.io/sport-report/tennis.html">Tennis</a>
-          <a href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
-            <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
-          <img id="fifa" src="https://i.postimg.cc/250vCrJL/NBA-logo.png" alt="fifa" height="115" width="60">
-            <img id="fifa" src="https://i.postimg.cc/9XrK9BGs/Euroleague-logo.png" alt="fifa" height="105" width="90">
+            <a href="https://y10-social-media.github.io/social_media/">About</a>
+          <a class="active" href="https://y10-social-media.github.io/social_media/nba.html">NBA and EuroLeague</a>
+          <a href="https://y10-social-media.github.io/social_media/tennis.html">Tennis</a>
+            <a  href="https://y10-social-media.github.io/social_media/world-football.html">World Football</a>
+            <a href="https://y10-social-media.github.io/social_media/nhl.html">NHL</a>
+<!--              <a href="localhost:8000/profile.html">Profile</a>-->
+            <img id="fifa" src="https://i.postimg.cc/250vCrJL/NBA-logo.png" alt="fifa" height="120" width="65">
+            <img id="fifa" src="https://i.postimg.cc/9XrK9BGs/Euroleague-logo.png" alt="fifa" height="120" width="95">
           <div class="nav-right">
-            <div id="myphoto"></div>
-            <div id="mydata"></div>
+            <div id="myphoto" onclick="profile()"></div>
+            <div id="mydata" onclick="profile()"></div>
               <button id="button2" onclick="signout()">Sign out</button>
               <button id="button1" onclick="signin()">Sign in</button>
         </div>
@@ -462,9 +574,9 @@
        <tr>
            <td>
             <div id="parent">
-              <iframe src="https://fansided.com/2019/04/25/clippers-stun-warriors-game-5-win/"></iframe>
+              <iframe src="https://www.si.com/soccer/2019/04/24/manchester-derby-city-united-title-race-top-four-premier-league"></iframe>
 <!--                <a href="https://www.google.com/"       ask arman which one  >-->
-                    <button onclick="window.open('https://fansided.com/2019/04/25/clippers-stun-warriors-game-5-win/')" id= "imageb" type = "submit" name = "learn" value = "myimage">
+                    <button onclick="window.open('https://www.si.com/soccer/2019/04/24/manchester-derby-city-united-title-race-top-four-premier-league')" id= "imageb" type = "submit" name = "learn" value = "myimage">
             <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
           </button>
 <!--                </a>-->
@@ -472,16 +584,16 @@
            </td>
            <td>
             <div id="parent">
-            <iframe src="https://www.skysports.com/nba/news/36244/11703153/james-harden-praises-contribution-of-rockets-team-mate-pj-tucker-after-sealing-series-win-over-jazz"></iframe>
-            <button onclick="window.open('https://www.skysports.com/nba/news/36244/11703153/james-harden-praises-contribution-of-rockets-team-mate-pj-tucker-after-sealing-series-win-over-jazz')" id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <iframe src="https://bleacherreport.com/articles/2832866-epl-100-ranking-of-premier-leagues-best-players-after-matchday-35#slide0"></iframe>
+            <button onclick="window.open('https://bleacherreport.com/articles/2832866-epl-100-ranking-of-premier-leagues-best-players-after-matchday-35#slide0')" id= "imageb" type = "submit" name = "learn" value = "myimage">
             <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
           </button>
         </div>
            </td>
          <td>
             <div id="parent">
-            <iframe src="https://www.euroleague.net/news/i/9mdwyrsbr8vn865l/quick-start-keyed-efes-record-night"></iframe>
-            <button onclick="window.open('https://www.euroleague.net/news/i/9mdwyrsbr8vn865l/quick-start-keyed-efes-record-night')"  id= "imageb" type = "submit" name = "learn" value = "myimage">
+            <iframe src="https://www.sportsnet.ca/soccer/canadian-premier-league-faq-need-know/"></iframe>
+            <button onclick="window.open('https://www.sportsnet.ca/soccer/canadian-premier-league-faq-need-know/')"  id= "imageb" type = "submit" name = "learn" value = "myimage">
            <img src="https://i.postimg.cc/htFmg6T5/Screen-Shot-2019-04-18-at-8-48-45-AM.png" />
         </button>
         </div>
@@ -498,9 +610,15 @@
     
             
             <center><a class="myButton" onclick="tweet()">Submit</a></center>
+            <br>
+    
+            
     
         <br><center><input class="custom-file-input" id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /></center>
+        
         <div id="imgTest" style="display:none;"></div>
+            <center><input placeholder="YouTube Link" class=input id="vidFileID" type="text"/></center>
+        <div id="vidTest" style="display:none;"></div>
         
     </body>
 
