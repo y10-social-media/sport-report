@@ -430,6 +430,10 @@
             window.location="https://www.foxsports.com"
         }
         
+        fucntion profile(){
+            location.replace("https://y10-social-media.github.io/sport-report/profile.html")
+        }
+        
     </script>
 
       <body>
@@ -444,8 +448,8 @@
           <a href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
           <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
           <div class="nav-right">
-            <div id="myphoto"></div>
-            <div id="mydata"></div>
+            <div id="myphoto" onclick="profile()"></div>
+            <div id="mydata" onclick="profile()"></div>
               <button id="button2" onclick="signout()">Sign out</button>
               <button id="button1" onclick="signin()">Sign in</button>
         </div>
