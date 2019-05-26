@@ -410,8 +410,11 @@
     
             var twitdoc = document.getElementById("twit");
             var twitimg = document.getElementById("imgTest");
+            var pstvid = document.getElementById("vidFileID");
             var nameValue = twitdoc.value;
             var imgValue = twitimg.innerHTML;
+             var vidValue =
+            pstvid.value.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/");
             var js_time = Date.now();
             var tweetid = firebase.database().ref('tweets/' + userId + "/").push({nhl: nameValue, time: js_time, img: imgValue, vid: vidValue});
             twitdoc.value = "";
