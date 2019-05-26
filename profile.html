@@ -1,0 +1,1055 @@
+
+<html>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        .zoom {
+            transition: transform .25s; /* Animation */
+        }
+    
+        .zoom:hover {
+            transform: scale(1.35); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+        
+        img:hover {
+            transition: transform .50s; /* Animation */
+            transform: scale(1.35); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+        
+        body {
+             font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+         
+             
+            }
+        
+        #button1{
+            background-color: white;
+            padding: 11px;
+            font-family: sans-serif;
+            font-size: 18px;
+            position: absolute;
+            right: 105px;
+            border-radius: 7%;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button1:hover{
+            background-color: #99ebff;
+            color: black;
+        }
+        #button2{
+            background-color: white;
+            padding: 11px ;
+            font-family: sans-serif;
+            font-size: 18px;
+            position: absolute;
+            border-radius: 7%;
+            text-decoration: none;
+            display: inline-block;
+            right: 10px;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.5s; 
+            cursor: pointer;
+        }
+        #button2:hover{
+            background-color: #99ebff;
+            color: black;
+        }
+        .newprofbtn {
+            padding: 10px;
+            border: solid 2px green;
+            background-color: white;
+            color: black;
+        }
+        
+        .newprofbtn:hover {
+            padding: 10px;
+            background-color: #12c60b;
+            color: white;
+            border: solid 2px green;
+            cursor: pointer;
+        }
+        
+        .loader {
+          
+         
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        input {
+            padding: 5px;
+        }
+        
+        #prof {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.0);
+        }
+        
+        #changeprof {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.0);
+      
+        }
+        
+    
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+        
+        .avatar{
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            filter: brightness(0.8);
+        }
+        
+        .avatar:hover{
+            filter: brightness(1);
+        }
+        
+        body{
+            -webkit-animation: bgcolor 30s infinite; 
+            animation: bgcolor 30s infinite;
+        }
+        
+        
+      
+        
+        #myphoto {
+            cursor: pointer;
+        }
+        
+        /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+          background-color: #fefefe;
+          margin: 5% auto; /* 15% from the top and centered */
+          padding: 10px;
+          border: 1px solid #888;
+          width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .closes {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .closes:hover,
+        .closes:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        
+        #close{
+            padding: 8px 16px;
+            background-color: white;
+            color: black;
+            border: 3px solid black;
+            width: 200px;
+            align-self: center;
+            font-size: 15;
+        }
+        
+        #close:hover{
+            background-color: blue;
+            border: 3px solid blue;
+            color: white;
+            cursor: pointer;
+            font-size: 15;
+        }
+        
+        #twit{
+            width: 100%;
+            height: 400px;
+            border: 3px solid black;
+        }
+        
+/*
+        tr:hover {background-color: blue; color: white; cursor: pointer}
+        
+*/
+/*
+        th, td {
+            border: 1px solid blue;
+            text-align: center;
+        }
+        
+        td{
+            padding: 5px;
+        }
+        
+        table {
+            width: 100%;
+        }
+*/
+        
+/*
+        .tweet:hover{
+            background-color: lightgray;
+            cursor: pointer;
+        }
+*/
+         .nav {
+              background-color: #202D59;
+              overflow: hidden;
+              position: fixed;
+              top: 0;
+              width: 100%;
+              right: 0px;
+            }
+            /* Style the links inside the navigation bar */
+        .nav a {
+              float: left;
+              color: #f2f2f2;
+              text-align: center;
+              padding: 50px 50px;
+              text-decoration: none;
+              font-size: 18px;
+              transition: background 0.15s ease-in-out;
+            }
+            /* Change the color of links on hover */
+        .nav a:hover {
+              background-color: #192444;
+            }
+            /* Add a color to the active/current link */
+        .nav a.active {
+              background-color: #192444;
+              color: white;
+            }   
+    
+ /* Style the links inside the navigation bar */
+        .nav-right {
+          float: right;
+          color: #f2f2f2;
+          text-align: center;
+          padding: 12px 30px;
+          text-decoration: none;
+          font-size: 10px;
+          margin-right: 42px;
+        }
+        .nav-left{
+            float: left;
+        }
+        .topnav {
+          overflow: hidden;
+          background-color: black;
+          border-bottom: 1px solid white;
+        }
+
+        .topnav a {
+          float: left;
+          color: #f2f2f2;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+          font-size: 17px;
+        }
+
+        .topnav a:hover {
+          background-color: white;
+          color: black;
+        }
+
+        .topnav a.active {
+          background-color: #0000ff;
+          color: white;
+        }
+        
+        .btnat {
+            background-color: blue;
+            font-family: Times New Roman;
+            border: 3px solid white;
+            color: black;
+            padding: 16px 32px;
+            text-align: center;
+            font-size: 25px;
+            transition: 0.2s;
+        }
+
+        .btn {
+            background-color: black;
+            font-family: Times New Roman;
+            border: 3px solid white;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            font-size: 25px;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background-color: white;
+            color: black;
+            cursor: pointer;
+        }
+        
+        #signout:hover {
+            cursor: pointer;
+        }
+        
+        .signbtn{
+            padding: 8px 16px;
+            background-color: white;
+            color: black;
+            border: 3px solid black;
+        }
+        input[type=file]::-webkit-file-upload-button {
+          content: 'Upload an Image';
+          display: inline-block;
+          background: linear-gradient(top, #f9f9f9, #e3e3e3);
+          border: 1px solid #999;
+          border-radius: 3px;
+          padding: 5px 7px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 700;
+          font-size: 10pt;
+        }
+        .custom-file-input::before {
+          content: 'Upload an Image';
+        }
+        .custom-file-input::-webkit-file-upload-button {
+           visibility: hidden;
+        }
+        .custom-file-input::before {
+          content: 'Upload an Image';
+          display: inline-block;
+          background: linear-gradient(top, #f9f9f9, #e3e3e3);
+          border: 1px solid #999;
+          border-radius: 3px;
+          padding: 6px 6px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 400;
+          font-size: 7.5pt;
+        }
+        .custom-file-input:hover::before {
+          border-color: black;
+        }
+        .custom-file-input:active::before {
+          background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+        
+        .signbtn:hover{
+            padding: 8px 16px;
+            background-color: limegreen;
+            color: white;
+            border: 3px solid limegreen;
+            cursor: pointer;
+        }
+        
+        .submit {
+          padding: 4px 4px;
+            background-color: white;
+            color: black;
+            border: 3px solid black;
+        }
+        
+        .submit:hover {
+          padding: 4px 4px;
+            background-color: lightblue;
+            color: white;
+            border: 3px solid blue;
+            cursor: pointer;
+        }
+        
+        #inputFileToLoad{
+            margin-left: 10px;
+        }
+        
+        .topnav {
+            font-family: "Fredoka One";
+            overflow: hidden;
+            background-color:blue;
+            color: white;
+            font-size: 30px;
+            padding: 13px;
+        }
+        .topnav a {
+            color: white;
+            float: right;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            font-family: "Fredoka One";
+            padding: 9px;
+            max-height: 20px;
+            z-index: 5;
+        }
+        .topnav a:hover {
+            background-color:white;
+            color: blue;
+        }
+        .topnav a.active {
+            background-color: white;
+            color: blue;
+        }
+        
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: blue;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+
+        }
+
+        /* Dropdown button on hover & focus */
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: blue;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            float: right;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 55px;
+            background-color: white;
+            min-width: 80px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: blue;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            float: none;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: blue;
+            color: white;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .modaltext{
+            font-size: 30;
+        }
+    
+    </style>
+    <script>
+        
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCLg_5JJfOefA0yaflqKt6NqDIncUrHzbw",
+            authDomain: "test-21ce7.firebaseapp.com",
+            databaseURL: "https://test-21ce7.firebaseio.com",
+            projectId: "test-21ce7",
+            storageBucket: "test-21ce7.appspot.com",
+            messagingSenderId: "741408477305"
+        };
+        
+
+
+        firebase.initializeApp(config);
+                
+        // Check to see if you are logged in
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user == null) {
+                alert("Not logged in.");
+                
+        
+                
+                return;
+                
+            } else {
+                userId = user.uid;
+                name = user.displayName;
+                imageUrl = user.photoURL;
+                email = user.email;
+
+                    
+                // write user data to users
+                writeUserData(userId, name, email, imageUrl);
+                
+                // write data to document
+                //mydiv = document.getElementById("mydata");
+                //mydiv.innerHTML = name;
+                
+                //myphotodiv = document.getElementById("invis");
+                //myphotodiv.style.visibility="visible";
+                // write user data to users
+                myphotodiv = document.getElementById("myphoto");
+                myphotodiv.innerHTML = "<img id='profilepic' onmouseover='showPic()' src='" + imageUrl + "'style='max-width:50px; max-height:50px; display:inline-block; padding-bottom: 0px; z-index:-1;'/>";
+                
+                photodiv = document.getElementById("modalphoto");
+                var modalcontent = "<center><p class='modaltext'>" + name + "</p><img id='profilepic' src='" + imageUrl + "'style='max-height:300px; border-radius: 10px'></center>";
+                photodiv.innerHTML = modalcontent;
+                
+                showProf();
+                
+                /*userprof = document.getElementById("prof");
+                var p = "<center><img height='20%' src='" + imageUrl + "'><br><h2>Username: " + name + "</h2></center>";
+                userprof.innerHTML = p;
+                
+                colL = document.getElementById("left");
+                var l = "<h3 style='margin-left: 30px;'>Email: " + user.email + "</h3><h3 style='margin-left: 30px;'>Email: " + user.email + "</h3>";
+                colL.innerHTML = l;
+                
+                colR = document.getElementById("right");
+                var r = "<h3 style='margin-left: 30px;'>Email: " + user.email + "</h3>";
+                colR.innerHTML = r;*/
+
+                firebase.database().ref('/users').once('value').then(function(snapshot) {
+                    var data = (snapshot.val());
+                    if (data == null) {
+                      console.log("No data found at /users/" + userId);  
+                    } else {
+                        
+                        var userdata = (snapshot.val());
+                        if (userdata != null) {
+                           dataarray = [data,userdata]
+                           console.log(dataarray)
+                           //updatetweets(dataarray); 
+                           //showUsers(dataarray);
+                            updateModal(dataarray);
+                        }
+                      //console.log(data)
+                      //updatetweets(data);
+                    }
+                });
+            } // end user null check
+        }); // end check auth state
+        
+        function encodeImageFileAsURL() {
+
+            var filesSelected = document.getElementById("inputFileToLoad").files;
+            if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function(fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    //var newImage = document.createElement('img');
+                    //newImage.src = srcData;
+                    //document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                    document.getElementById("chosenImg").innerHTML = srcData;
+                    //document.getElementById("chosenImg").style.display = "block";
+                    //console.log("Converted Base64 version is: " + document.getElementById("imgTest").innerHTML);
+                    //console.log(srcData);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        } // end function
+        
+        // write user data
+        function writeUserData(userId, name, email, imageUrl) {
+            firebase.database().ref('users/' + userId).update({
+                username: name,
+                email: email,
+                profile_picture : imageUrl,
+                userId: userId
+            });
+        }
+        
+        function showProf() {
+            
+            var yourUsername = "";
+            var yourPic = "";
+            var yourAge = "";
+            var yourBio = "";
+            var yourEmail = "";
+            var yourName = "";
+            var yourFav = "";
+            var yourRecent = "";
+            
+            firebase.database().ref('/users').once('value').then(function(snapshot) { 
+                var userdata = (snapshot.val());
+                    dataarray = [userdata]
+                    console.log(dataarray);
+                    users = dataarray[0];
+                
+                    for (var u in users) {
+                        if (users[u].userId == userId) {
+                            
+                            yourName = users[u].newName;
+                            
+                            if (users[u].newName != null) {
+                                yourUsername = users[u].newName;
+                            } 
+                            else {
+                                yourUsername = users[u].username;
+                            }
+    
+                            if (users[u].newPic != null) {
+                                yourPic = users[u].newPic;
+                            }
+                            else {
+                                yourPic = users[u].profile_picture;
+                            }
+                            
+                            if (users[u].email != null) {
+                                yourEmail = users[u].email;
+                            }
+                            
+                            if (users[u].favorite_sport != null) {
+                                yourBio = users[u].favorite_sport;
+                            }
+                            else{
+                                yourBio = "N/A"
+                            }
+                            
+                            if (users[u].team != null) {
+                                yourAge = users[u].team;
+                            }
+                            else{
+                                yourAge = "N/A"
+                            }
+                            
+                            if (users[u].book != null) {
+                                yourFav = users[u].book;
+                            }
+                            else{
+                                yourFav = "N/A"
+                            }
+                            
+                            if (users[u].recent != null) {
+                                yourRecent = users[u].recent;
+                            }
+                            else{
+                                yourRecent = "N/A"
+                            }
+                            
+                            userprof = document.getElementById("prof");
+                            var p = "<center><img height='20%' src='" + yourPic + "'><br><h2>" + yourName + "</h2></center>";
+                            userprof.innerHTML = p;
+                            
+                            lprof = document.getElementById("left");
+                            var l = "<h3>Email: " + yourEmail + "</h3><h3>Favorite Team/Player: " + yourAge + "</h3><h3>Username: " + yourUsername + "</h3><h3>Favorite Sport: " + yourBio + "</h3>";
+                            lprof.innerHTML = l; 
+                            
+//                            rprof = document.getElementById("right");
+//                            var r = "<h3>Username: " + yourUsername + "</h3><h3 style='margin-left: 30px;'>Favorite Sport: " + yourBio + "</h3>";
+//                            rprof.innerHTML = r; 
+                        }
+                    }
+                
+                
+            });
+        }
+        
+        function chgBio() {
+            var newSport = document.getElementById("newbio").value;
+            //alert(document.getElementById("newbio").value);
+            if (newSport.length > 50) {
+                alert("Your bio cannot be longer than 30 characters");
+            } 
+            else {
+                firebase.database().ref('users/' + userId).update({
+                    favorite_sport: newSport
+                });
+                alert("Successfully Updated Sport");
+            }
+            showProf();
+        }
+        
+        function chgPic() {
+            var newPic = document.getElementById("chosenImg").innerHTML;
+            firebase.database().ref('users/' + userId).update({
+                profile_picture2: newPic
+            });
+            alert("Successfully Updated Picture");
+        }
+        
+        function chgAge() {
+            var newTeam = document.getElementById("newage").value;
+            //alert(document.getElementById("newage").value);
+            if (newTeam.length > 30) {
+                alert("Your bio cannot be longer than 30 characters");
+            } 
+            else {
+                firebase.database().ref('users/' + userId).update({
+                    team: newTeam
+                });
+                alert("Successfully Updated Team/Player"); 
+            }
+            showProf();
+        }
+        
+        function chgFav() {
+            var newfav = document.getElementById("fav").value;
+            //alert(document.getElementById("fav").value);
+            if (newfav.length > 30) {
+                alert("The title cannot be longer than 30 characters");
+            } 
+            else {
+                firebase.database().ref('users/' + userId).update({
+                    book: newfav
+                });
+                alert("Successfully Updated Favourite Book"); 
+            }
+            showProf();
+        }
+        
+        function chgRec() {
+            var newrecent = document.getElementById("recent").value;
+            //alert(document.getElementById("recent").value);
+            if (newrecent.length > 30) {
+                alert("The title cannot be longer than 30 characters");
+            } 
+            else {
+                firebase.database().ref('users/' + userId).update({
+                    recent: newrecent
+                });
+                alert("Successfully Updated Most Recent Book"); 
+            }
+            showProf();
+        }
+        
+        function signin() {
+            console.log("Signing in");
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider).then(function(result) { 
+                window.location.replace("fbtest.html");
+            });
+        }
+        
+        function signout() {
+            console.log("Signing out");
+            firebase.auth().signOut().then(function(result) {
+            });
+        }
+        
+        function profile() {
+          location.replace("https://y10-social-media.github.io/sport-report/profile.html")
+        }
+        
+        function openProfile(){
+            closebtn = document.getElementById("closebtn");
+            closebtn.innerHTML = "<button onclick='closeProfile()'>---</button>";
+            tweets = document.getElementById("mytweets");
+            tweets.style.display = "block";
+        }
+        
+        function closeProfile(){
+            closebtn = document.getElementById("closebtn");
+            closebtn.innerHTML = "<button onclick='openProfile()'>+++</button>";
+            tweets = document.getElementById("mytweets");
+            tweets.style.display = "none";
+        }
+        
+        function showPic(){
+            pic = document.getElementById("profilepic");
+            
+        }
+
+        function makeCyan(str){
+            var k = document.getElementById(str);
+            str.style.color = "cyan";
+        }
+        
+        function makeWhite(str){
+            var k = document.getElementById(str);
+            str.style.color = "white";
+        }
+        
+        function openModal(){
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+        }
+        
+        function closeModal(){
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
+            photodiv = document.getElementById("modalphoto");
+        }
+        
+        function updateModal(data){
+            users = data[1];
+            data = data[0];
+            photodiv = document.getElementById("modalphoto");
+            var modalcontent = "<center><p class='modaltext'>" + name + "</p><img id='profilepic' src='" + imageUrl + "'style='max-height:300px; border-radius: 10px'><p class='modaltext'></p></center>";
+            var yourUsername = "";
+            var yourPic = "";
+            var yourAge = "";
+            var yourBio = "";
+            var yourEmail = "";
+            var yourName = "";
+            var yourFav = "";
+            var yourRecent = "";
+            
+            var updated = false;
+            
+            for (var u in data) {
+                
+                if (users[u].userId = userId && !updated){
+                    
+                    updated = true;
+                    
+                    if (users[u].newName != null) {
+                        yourUsername = users[u].newName;
+                    } 
+                    else {
+                        yourUsername = users[u].username;
+                    }
+
+                    if (users[u].newPic != null) {
+                        yourPic = users[u].newPic;
+                    }
+                    else {
+                        yourPic = users[u].profile_picture;
+                    }
+
+                    if (users[u].email != null) {
+                        yourEmail = users[u].email;
+                    }
+
+                    if (users[u].favorite_sport != null) {
+                        yourBio = users[u].favorite_sport;
+                    }
+                    else{
+                        yourBio = "N/A"
+                    }
+
+                    if (users[u].team != null) {
+                        yourAge = users[u].team;
+                    }
+                    else{
+                        yourAge = "N/A"
+                    }
+
+                    if (users[u].book != null) {
+                        yourFav = users[u].book;
+                    }
+                    else{
+                        yourFav = "N/A"
+                    }
+
+                    if (users[u].recent != null) {
+                        yourRecent = users[u].recent;
+                    }
+                    else{
+                        yourRecent = "N/A"
+                    }
+                    
+                    modalcontent = modalcontent + "<center><p class='modaltext'>Username: " + yourUsername + "<br>Bio: " + yourBio + "<br>Favorite Team: " + yourAge + "<br>Favourite Book: " + yourFav + "<br>Most Recent Read: " + yourRecent + "</p></center>";
+                    photodiv.innerHTML = modalcontent;
+                    
+                }
+                
+            }
+            
+        }
+        
+        function uNameChg() {
+            
+            var uNameOK = true;
+            var newUsername = document.getElementById("newname").value;
+            
+            firebase.database().ref('/users').once('value').then(function(snapshot) { 
+                var userdata = (snapshot.val());
+                    dataarray = [userdata]
+                    console.log(dataarray);
+                    users = dataarray[0];
+                
+                for (var u in users) {
+                    if (newUsername == users[u].username || newUsername == users[u].newName) {
+                        uNameOK = false;
+                    }
+                    if (users[u].profile_picture2 != null) {
+                         infoPic = users[u].profile_picture2;
+                    } else {
+                        infoPic = users[u].profile_picture;
+                      }
+                }
+                
+                for (i = 0; i < newUsername.length; i++) {
+                    if (newUsername.substring(i, i+1) == " ") {
+                        uNameOK = false;
+                    }
+                }
+                
+                if (!uNameOK) {
+                    alert("Your username either contains spaces or someone else has already claimed that username");
+                }
+                
+                else {
+                
+                    if (newUsername.length > 17) {
+                        alert("Your username cannot be longer than 17 characters");
+                    }
+                    else {
+                        
+                        firebase.database().ref('users/' + userId).update({
+                            newName: newUsername
+                        });
+
+                        alert("Successfully Updated Username");
+                    }
+               
+                }
+                    
+            });
+            
+            showProf();
+            
+        }
+        
+        function profile() {
+          location.replace("profile.html")
+        }
+        
+    </script>
+
+    <body>
+        
+        <!--<a href="index.html"><button class="btnat" style="margin-left: 6%; width: 28%">Home</button></a>
+        <a href="explore.html"><button class="btn" style="width: 28%">Explore</button></a>
+        <a href=""><button class="btn" style="margin-right: 6%; width: 28%">Profile</button></a>-->
+        
+        
+        <div class="nav">
+             <div class="nav-left">
+            <img id="fifa" src="https://i.postimg.cc/t4ZmZRWP/sport-report-logo.png" alt="fifa" height="120" width="120">
+            </div>
+            <a href="https://y10-social-media.github.io/sport-report/">About</a>
+          <a href="https://y10-social-media.github.io/sport-report/nba-eleague.html">NBA and EuroLeague</a>
+          <a href="https://y10-social-media.github.io/sport-report/tennis.html">Tennis</a>
+            <a href="https://y10-social-media.github.io/sport-report/world-football.html">World Football</a>
+            <a href="https://y10-social-media.github.io/sport-report/nhl.html">NHL</a>
+      
+          <div class="nav-right">
+            <div id="myphoto" onclick="profile()"></div>
+            <div id="mydata" onclick="profile()"></div>
+              <button id="button2" onclick="signout()">Sign out</button>
+              <button id="button1" onclick="signin()">Sign in</button>
+        </div>
+        </div>
+        
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <div id="prof">
+        
+            <center>
+                <div class='loader'></div>
+                <br>
+                <h3>Loading Profile...</h3>
+            </center>
+            
+        </div>
+        
+        
+        
+        <center><table>
+        <tr>
+        <td>
+            <div id="changeprof">
+        
+            <h2>Edit Profile:</h2>
+            
+            <h4>New Username:</h4>
+            <input type="text" id="newname"  placeholder="Enter New Username..">
+            <button onclick="uNameChg()" class="newprofbtn">Submit</button>
+            
+            <br><br>
+            
+            <h4>New Favorite Sport:</h4>
+            <input type="text" id="newbio" placeholder="Enter New Sport..">
+            <button onclick="chgBio()" class="newprofbtn">Submit</button>
+            
+            <br><br>
+            
+            <h4>New Favorite Team/Player:</h4>
+            <input type="text" id="newage" placeholder="Enter New Team/Player..">
+            <button onclick="chgAge()" class="newprofbtn">Submit</button>
+            
+            <br><br>
+            
+            <h4>New Profile Image:</h4>
+            <input class="custom-file-input" id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" />
+            <button onclick="chgPic()" class="newprofbtn">Submit</button>
+            <div id="chosenImg" style="display:none;"></div>
+            
+        
+        </div>
+            </td>
+            <td>
+        <div class="row">
+          <div class="column" id="left"></div>
+        </div>
+                </td>
+            </tr>
+        </table></center>
+    
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="closes" onclick="closeModal()">&times;</span>
+            <div id="modalphoto"></div>
+          </div>
+
+        </div>
+        
+        
+    </body>
+
+    
+
+    
+</html>
